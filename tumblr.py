@@ -13,8 +13,8 @@ import os
 
 USE_PROXY = True
 PROXY = {
-	"http": "socks5://127.0.0.1:1080",
-	"https": "socks5://127.0.0.1:1080"
+    "http": "socks5://127.0.0.1:1080",
+    "https": "socks5://127.0.0.1:1080"
     }
 
 START = 0
@@ -36,7 +36,7 @@ def download(site, thread_id, total):
     global n, TIMEOUT, RETRY
     while(not photos_url.empty()):
         url = photos_url.get()
-        filename = site + '/' + url.split('/')[-1]
+        filename = site + '/photo/' + url.split('/')[-1]
         logger("[T p %d](%d/%d) to download %s" % (thread_id, n, total, filename))
         done_id = n
         n += 1
@@ -62,7 +62,7 @@ def download(site, thread_id, total):
         except Exception as e:
             logger('rename %s error, force to: %d' % (url, n))
             video_id = str(n)
-        filename = site + '/' + video_id + '.mp4'
+        filename = site + '/video/' + video_id + '.mp4'
         logger("[T v %d](%d/%d) to download %s" % (thread_id, n, total, filename))
         done_id = n
         n += 1
@@ -152,16 +152,21 @@ def tasks(site, types, thread):
 if __name__ == "__main__":
     gevent.monkey.patch_all()
     parser = OptionParser()
-
     parser.add_option("-s", "--sites",
                         help="sites split with ',', example:2013117,66666")
     parser.add_option("--type",
                         help="[photo|video|both]")
     parser.add_option("--thread",
                         help="threads")
+    parser.add_option("--proxy",
+                        help="socks5://127.0.0.1:1080")
 
     (options, args) = parser.parse_args()
-
+    if options.proxy:
+        PROXY = {
+                "http": options.proxy,
+                "https": options.proxy
+                }
     if options.sites == None or options.type not in {'photo', 'video', 'both'}:
         parser.print_help()
         exit(0)

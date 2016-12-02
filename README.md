@@ -12,6 +12,7 @@ pip3 install lxml gevent PySocks
                             sites split with ',', example:2013117,66666
       --type=TYPE           [photo|video|both]
       --thread=THREAD       threads
+      --proxy=PROXY         socks5://127.0.0.1:1080
 
 - - -
     can be changed in source file:
