@@ -141,6 +141,8 @@ def crawler(site, types):
 def tasks(site, types, thread):
     try:
         os.mkdir(site)
+        os.mkdir(site + '/photo')
+        os.mkdir(site + '/video')
     except Exception as e:
         logger(str(e))
     total = crawler(site, types)
